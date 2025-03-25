@@ -321,6 +321,47 @@ function getControlZones() {
   };
   return { left: leftZone, right: rightZone };
 }
+// 處理滑鼠 + 觸控的座標轉換
+function getPointerPos(evt) {
+  const rect = canvas.getBoundingClientRect();
+  let clientX, clientY;
+
+  if (evt.touches) {
+    clientX = evt.touches[0].clientX;
+    clientY = evt.touches[0].clientY;
+  } else {
+    clientX = evt.clientX;
+    clientY = evt.clientY;
+  }
+
+  const x = (clientX - rect.left) * (canvas.width / rect.width);
+  const y = (clientY - rect.top) * (canvas.height / rect.height);
+  return { x, y };
+}
+
+// 判斷是否點擊在控制區
+function handleControlPress(evt) {
+  evt.preventDefault(); // 防止手機瀏覽器拖動
+
+  const pos = getPointerPos(evt);
+  const zones = getControlZones();
+
+  leftControlActive = isColliding(pos, zones.left);
+  rightControlActive = isColliding(pos, zones.right);
+}
+
+// 當觸控/點擊結束時，停止移動
+function handleControlRelease(evt) {
+  leftControlActive = false;
+  rightControlActive = false;
+}
+
+// 加上事件監聽（滑鼠 & 觸控）
+canvas.addEventListener("mousedown", handleControlPress);
+canvas.addEventListener("mouseup", handleControlRelease);
+canvas.addEventListener("touchstart", handleControlPress);
+canvas.addEventListener("touchend", handleControlRelease);
+
 
 // -------------------- 遊戲流程 --------------------
 function startGame() {
@@ -463,6 +504,18 @@ document.addEventListener("touchcancel", () => {
 // -------------------- 主更新函數 --------------------
 function update() {
   if (!gameStarted) return;
+  // 根據控制狀態改變角色速度
+character.dx = 0;
+if (leftControlActive) character.dx = -character.speed;
+if (rightControlActive) character.dx = character.speed;
+
+// 實際移動角色
+character.x += character.dx;
+
+// 防止超出邊界（可選）
+character.x = Math.max(0, Math.min(canvas.width - character.width, character.x));
+
+
   
   // 角色左右移動
   character.dx = 0;
