@@ -13,7 +13,7 @@ const platformImage = new Image();
 platformImage.src = 'images/platform.png';
 
 const bmwImage = new Image();
-bmwImage.src = 'images/BMW.png';
+bmwImage.src = 'images/bmw.png';
 
 const taxiImage = new Image();
 taxiImage.src = 'images/taxi.png';
