@@ -2,6 +2,25 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
+// 設定遊戲原始邏輯大小
+canvas.width = 800;
+canvas.height = 600;
+
+// 📱 自動縮放 Canvas 顯示大小以符合手機螢幕
+function resizeCanvas() {
+  const scale = Math.min(
+    window.innerWidth / canvas.width,
+    window.innerHeight / canvas.height
+  );
+
+  canvas.style.width = canvas.width * scale + 'px';
+  canvas.style.height = canvas.height * scale + 'px';
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas(); // 頁面一載入就執行一次
+
+
 // -------------------- 載入圖片資源 --------------------
 const characterImage = new Image();
 characterImage.src = 'images/character.png';
