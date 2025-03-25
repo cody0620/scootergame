@@ -359,8 +359,7 @@ function handleControlRelease(evt) {
 // 加上事件監聽（滑鼠 & 觸控）
 canvas.addEventListener("mousedown", handleControlPress);
 canvas.addEventListener("mouseup", handleControlRelease);
-canvas.addEventListener("touchstart", handleControlPress);
-canvas.addEventListener("touchend", handleControlRelease);
+
 
 
 // -------------------- 遊戲流程 --------------------
